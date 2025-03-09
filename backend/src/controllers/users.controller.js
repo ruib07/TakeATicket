@@ -24,16 +24,6 @@ export const usersController = (app) => {
     }
   };
 
-  const createUser = async (req, res, next) => {
-    try {
-      const newUser = req.body;
-      const result = await userFromDb.save(newUser);
-      return res.status(201).json(result);
-    } catch (error) {
-      return next(error);
-    }
-  };
-
   const updateUser = async (req, res, next) => {
     try {
       const updatedUserInfo = req.body;
@@ -56,7 +46,6 @@ export const usersController = (app) => {
   return {
     getAllUsers,
     getUserById,
-    createUser,
     updateUser,
     deleteUser,
   };

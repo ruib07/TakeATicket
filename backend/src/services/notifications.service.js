@@ -11,9 +11,9 @@ export const notificationsService = (app) => {
     return app.db('notifications').insert(newNotification, '*');
   };
 
-  const update = (id, ticketRes) => app.db('notifications')
+  const update = (id, notificationRes) => app.db('notifications')
     .where({ id })
-    .update(ticketRes, '*');
+    .update({ status: 'read', ...notificationRes }, '*');
 
   const remove = (id) => app.db('notifications')
     .where({ id })
