@@ -5,7 +5,8 @@ import { OpaqueColorValue, StyleProp, ViewStyle } from "react-native";
 
 const MAPPING = {
   "house.fill": "home",
-  "user.fill": "person",
+  "lock.fill": "lock",
+  "person.fill": "person",
   "chevron.left.forwardslash.chevron.right": "code",
   "chevron.right": "chevron-right",
 } as Partial<

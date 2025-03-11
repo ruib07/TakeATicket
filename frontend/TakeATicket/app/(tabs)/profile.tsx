@@ -1,13 +1,23 @@
-import { StyleSheet, Image, Platform } from "react-native";
-
+import { Image, Platform, TouchableOpacity } from "react-native";
 import { Collapsible } from "@/components/Collapsible";
 import { ExternalLink } from "@/components/ExternalLink";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { IconSymbol } from "@/components/ui/IconSymbol";
+import profileStyles from "@/styles/profileStyles";
+import globalStyles from "@/styles/globalStyles";
 
 export default function TabTwoScreen() {
+  const handleSignout = () => {
+    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    sessionStorage.removeItem("userId");
+    localStorage.removeItem("role");
+    sessionStorage.removeItem("role");
+  };
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
@@ -16,11 +26,11 @@ export default function TabTwoScreen() {
           size={310}
           color="#808080"
           name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
+          style={profileStyles.headerImage}
         />
       }
     >
-      <ThemedView style={styles.titleContainer}>
+      <ThemedView style={profileStyles.titleContainer}>
         <ThemedText type="title">Profile</ThemedText>
       </ThemedView>
       <ThemedText>
@@ -111,19 +121,11 @@ export default function TabTwoScreen() {
           ),
         })}
       </Collapsible>
+      <ThemedView style={globalStyles.container}>
+        <TouchableOpacity style={profileStyles.button} onPress={handleSignout}>
+          <ThemedText style={profileStyles.buttonText}>Sign out</ThemedText>
+        </TouchableOpacity>
+      </ThemedView>
     </ParallaxScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  headerImage: {
-    color: "#808080",
-    bottom: -90,
-    left: -35,
-    position: "absolute",
-  },
-  titleContainer: {
-    flexDirection: "row",
-    gap: 8,
-  },
-});

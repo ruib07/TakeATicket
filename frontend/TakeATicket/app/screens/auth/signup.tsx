@@ -4,15 +4,15 @@ import formStyles from "@/styles/formStyles";
 import { MaterialIcons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { Image, TouchableOpacity, Alert } from "react-native";
-import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedInput } from "@/components/ThemedInput";
 import { ThemedPicker } from "@/components/ThemedPicker";
+import { router } from "expo-router";
+import globalStyles from "@/styles/globalStyles";
 
-export default function SignupForm() {
-  const router = useRouter();
+export default function SignupScreen() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,14 +29,8 @@ export default function SignupForm() {
 
     try {
       await Signup(newUser);
-      Alert.alert("Success", "Account created successfully!", [
-        {
-          text: "OK",
-          onPress: () => router.push("/screens/auth/signin"),
-        },
-      ]);
+      router.push("/screens/auth/signin");
     } catch (error: any) {
-      console.error("Signup error:", error);
       Alert.alert("Something went wrong", error.message || "Unknown error");
     }
   };
@@ -51,9 +45,9 @@ export default function SignupForm() {
         />
       }
     >
-      <ThemedView style={formStyles.container}>
+      <ThemedView style={globalStyles.container}>
         <ThemedText type="title" style={{ marginBottom: 10 }}>
-          Signup
+          Sign up
         </ThemedText>
         <ThemedView style={formStyles.formField}>
           <ThemedInput onChangeText={setName} placeholder="Name" value={name} />
@@ -97,8 +91,18 @@ export default function SignupForm() {
           />
         </ThemedView>
         <TouchableOpacity style={formStyles.button} onPress={handleSignup}>
-          <ThemedText style={formStyles.buttonText}>Signup</ThemedText>
+          <ThemedText style={formStyles.buttonText}>Sign up</ThemedText>
         </TouchableOpacity>
+        <ThemedView style={{ flexDirection: "row", alignItems: "center" }}>
+          <ThemedText>Already have an account?</ThemedText>
+          <ThemedText
+            type="link"
+            style={{ marginLeft: 5 }}
+            onPress={() => router.push("/screens/auth/signin")}
+          >
+            Click here
+          </ThemedText>
+        </ThemedView>
       </ThemedView>
     </ParallaxScrollView>
   );

@@ -8,10 +8,6 @@ export default StyleSheet.create({
     left: 0,
     position: "absolute",
   },
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
   title: {
     fontSize: 20,
   },
@@ -33,7 +29,7 @@ export default StyleSheet.create({
   eyeIcon: {
     padding: 10,
     marginTop: -50,
-    marginLeft: 300,
+    marginLeft: 280,
     color: "#A1CEDC",
   },
   button: {
