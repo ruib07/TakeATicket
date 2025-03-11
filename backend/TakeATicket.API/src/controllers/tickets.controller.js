@@ -24,6 +24,30 @@ export const ticketsController = (app) => {
     }
   };
 
+  const getTicketsByAdmin = async (req, res, next) => {
+    try {
+      const tickets = await ticketFromDb.findAll({ admin_id: req.params.admin_id });
+      if (!tickets) {
+        return res.status(404).json({ error: 'Tickets not found' });
+      }
+      return res.status(200).json(tickets);
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  const getTicketsByUser = async (req, res, next) => {
+    try {
+      const tickets = await ticketFromDb.findAll({ user_id: req.params.user_id });
+      if (!tickets) {
+        return res.status(404).json({ error: 'Tickets not found' });
+      }
+      return res.status(200).json(tickets);
+    } catch (error) {
+      return next(error);
+    }
+  }
+
   const createTicket = async (req, res, next) => {
     try {
       const newTicket = req.body;
@@ -56,6 +80,8 @@ export const ticketsController = (app) => {
   return {
     getAllTickets,
     getTicketById,
+    getTicketsByAdmin,
+    getTicketsByUser,
     createTicket,
     updateTicket,
     deleteTicket,

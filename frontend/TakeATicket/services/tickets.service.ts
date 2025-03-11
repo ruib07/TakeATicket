@@ -7,6 +7,12 @@ export const GetTickets = async () =>
 export const GetTicketById = async (ticketId: string) =>
   apiRequest("GET", `tickets/${ticketId}`, undefined, true);
 
+export const GetTicketsByAdmin = async (adminId: string) =>
+  apiRequest("GET", `tickets/byadmin/${adminId}`, undefined, true);
+
+export const GetTicketsByUser = async (userId: string) =>
+  apiRequest("GET", `tickets/byuser/${userId}`, undefined, true);
+
 export const CreateTicket = async (newTicket: ITicket) =>
   apiRequest("POST", "tickets", newTicket, true);
 
