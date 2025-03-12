@@ -1,15 +1,16 @@
-import jwtsimple from 'jwt-simple';
-import bcrypt from 'bcrypt';
-import { usersService } from '../services/users.service.js';
-const secret = 'userTakeATicket@2025';
+import jwtsimple from "jwt-simple";
+import bcrypt from "bcrypt";
+import { usersService } from "../services/users.service.js";
+const secret = "userTakeATicket@2025";
 
 export const authController = (app) => {
   const userFromDb = usersService(app);
 
   const signin = (req, res, next) => {
-    userFromDb.find({
-      email: req.body.email,
-    })
+    userFromDb
+      .find({
+        email: req.body.email,
+      })
       .then((user) => {
         if (bcrypt.compareSync(req.body.password, user.password)) {
           const payload = {
@@ -22,7 +23,7 @@ export const authController = (app) => {
           const token = jwtsimple.encode(payload, secret);
           res.status(200).json({ token, user: payload });
         } else {
-          res.status(400).json({ error: 'Invalid authentication!' });
+          res.status(400).json({ error: "Invalid authentication!" });
         }
       })
       .catch((error) => next(error));
@@ -41,4 +42,4 @@ export const authController = (app) => {
     signin,
     signup,
   };
-}
+};

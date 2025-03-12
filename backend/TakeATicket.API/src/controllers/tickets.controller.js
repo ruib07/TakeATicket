@@ -16,7 +16,7 @@ export const ticketsController = (app) => {
     try {
       const ticket = await ticketFromDb.find({ id: req.params.id });
       if (!ticket) {
-        return res.status(404).json({ error: 'Ticket not found' });
+        return res.status(404).json({ error: "Ticket not found" });
       }
       return res.status(200).json(ticket);
     } catch (error) {
@@ -26,27 +26,31 @@ export const ticketsController = (app) => {
 
   const getTicketsByAdmin = async (req, res, next) => {
     try {
-      const tickets = await ticketFromDb.findAll({ admin_id: req.params.admin_id });
+      const tickets = await ticketFromDb.findAll({
+        admin_id: req.params.admin_id,
+      });
       if (!tickets) {
-        return res.status(404).json({ error: 'Tickets not found' });
+        return res.status(404).json({ error: "Tickets not found" });
       }
       return res.status(200).json(tickets);
     } catch (error) {
       return next(error);
     }
-  }
+  };
 
   const getTicketsByUser = async (req, res, next) => {
     try {
-      const tickets = await ticketFromDb.findAll({ user_id: req.params.user_id });
+      const tickets = await ticketFromDb.findAll({
+        user_id: req.params.user_id,
+      });
       if (!tickets) {
-        return res.status(404).json({ error: 'Tickets not found' });
+        return res.status(404).json({ error: "Tickets not found" });
       }
       return res.status(200).json(tickets);
     } catch (error) {
       return next(error);
     }
-  }
+  };
 
   const createTicket = async (req, res, next) => {
     try {
@@ -61,7 +65,10 @@ export const ticketsController = (app) => {
   const updateTicket = async (req, res, next) => {
     try {
       const updatedTicketInfo = req.body;
-      const result = await ticketFromDb.update(req.params.id, updatedTicketInfo);
+      const result = await ticketFromDb.update(
+        req.params.id,
+        updatedTicketInfo,
+      );
       return res.status(200).json(result[0]);
     } catch (error) {
       return next(error);

@@ -1,10 +1,10 @@
-import { config } from 'dotenv';
-import { resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { config } from "dotenv";
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
 
 let envPath;
-if (process.env.NODE_ENV === 'test') {
-  envPath = resolve(process.cwd(), './env/test.env');
+if (process.env.NODE_ENV === "test") {
+  envPath = resolve(process.cwd(), "./env/test.env");
 } else {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === 'test') {
 config({ path: envPath });
 
 const settings = {
-  client: 'pg',
+  client: "pg",
   connection: {
     host: process.env.POSTGRES_HOST,
     port: process.env.POSTGRES_PORT,
@@ -24,7 +24,7 @@ const settings = {
   },
   debug: false,
   migrations: {
-    directory: 'src/migrations',
+    directory: "src/migrations",
   },
   pool: {
     min: 0,

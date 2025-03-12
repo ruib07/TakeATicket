@@ -9,12 +9,13 @@ export const resetPasswordsController = (app) => {
     try {
       const user = await userFromDb.find({ email: req.body.email });
 
-      if (!user) {
-        return res.status(400).json({ error: 'User not found' });
+      if (user) {
+        await resetPasswordFromDb.sendPasswordResetEmail(
+          req.body.email,
+          user.id,
+        );
       }
-
-      await resetPasswordFromDb.sendPasswordResetEmail(req.body.email, user.id);
-      return res.status(200).json({ message: 'Password reset email sent' });
+      return res.status(200).json({ message: "Email sent successfully" });
     } catch (error) {
       return next(error);
     }
@@ -25,19 +26,22 @@ export const resetPasswordsController = (app) => {
       const { token, newPassword, confirmNewPassword } = req.body;
 
       if (newPassword !== confirmNewPassword) {
-        return res.status(400).json({ error: 'Passwords do not match' });
+        return res.status(400).json({ error: "Passwords do not match" });
       }
 
-      const tokenRecord = await app.db('passwordresettoken').where({ token }).first();
+      const tokenRecord = await app
+        .db("resetpasswordtokens")
+        .where({ token })
+        .first();
 
       if (!tokenRecord || new Date() > tokenRecord.expirydate) {
-        return res.status(400).json({ error: 'Invalid or expired token' });
+        return res.status(400).json({ error: "Invalid or expired token" });
       }
 
       await userFromDb.update(tokenRecord.user_id, { password: newPassword });
-      await app.db('passwordresettoken').where({ token }).del();
+      await app.db("resetpasswordtokens").where({ token }).del();
 
-      return res.status(200).json({ message: 'Password changed successfully' });
+      return res.status(200).json({ message: "Password changed successfully" });
     } catch (error) {
       return next(error);
     }

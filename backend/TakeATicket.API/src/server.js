@@ -1,5 +1,5 @@
-import { NODE_PORT } from './config.js';
+import { NODE_PORT } from "./config.js";
 
-import { listen } from './app.js';
+import { listen } from "./app.js";
 
-listen(NODE_PORT, () => { });
+listen(NODE_PORT, () => {});

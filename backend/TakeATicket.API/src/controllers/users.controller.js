@@ -16,7 +16,7 @@ export const usersController = (app) => {
     try {
       const user = await userFromDb.find({ id: req.params.id });
       if (!user) {
-        return res.status(404).json({ error: 'User not found' });
+        return res.status(404).json({ error: "User not found" });
       }
       return res.status(200).json(user);
     } catch (error) {

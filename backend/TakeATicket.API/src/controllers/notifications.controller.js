@@ -16,7 +16,7 @@ export const notificationsController = (app) => {
     try {
       const notification = await notificationFromDb.find({ id: req.params.id });
       if (!notification) {
-        return res.status(404).json({ error: 'Notification not found' });
+        return res.status(404).json({ error: "Notification not found" });
       }
       return res.status(200).json(notification);
     } catch (error) {
@@ -37,7 +37,10 @@ export const notificationsController = (app) => {
   const updateNotification = async (req, res, next) => {
     try {
       const updatedNotificationInfo = req.body;
-      const result = await notificationFromDb.update(req.params.id, updatedNotificationInfo);
+      const result = await notificationFromDb.update(
+        req.params.id,
+        updatedNotificationInfo,
+      );
       return res.status(200).json(result[0]);
     } catch (error) {
       return next(error);

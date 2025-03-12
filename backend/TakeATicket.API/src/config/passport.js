@@ -1,8 +1,8 @@
-import passport from 'passport';
-import passportJwt from 'passport-jwt';
-import { usersService } from '../services/users.service.js';
+import passport from "passport";
+import passportJwt from "passport-jwt";
+import { usersService } from "../services/users.service.js";
 
-const secret = 'userTakeATicket@2025';
+const secret = "userTakeATicket@2025";
 
 const { Strategy, ExtractJwt } = passportJwt;
 
@@ -15,19 +15,21 @@ export const passportConfig = (app) => {
   };
 
   const strategy = new Strategy(params, (payload, done) => {
-    service.find({ id: payload.id })
+    service
+      .find({ id: payload.id })
       .then((user) => {
         if (user) {
           done(null, { ...payload });
         } else {
           done(null, false);
         }
-      }).catch((error) => done(error, false));
+      })
+      .catch((error) => done(error, false));
   });
 
-  passport.use('jwt', strategy);
+  passport.use("jwt", strategy);
 
   return {
-    authenticate: () => passport.authenticate('jwt', { session: false }),
+    authenticate: () => passport.authenticate("jwt", { session: false }),
   };
 };
