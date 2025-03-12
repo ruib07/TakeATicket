@@ -13,7 +13,7 @@ beforeAll(async () => {
   user = await createAndAuthenticateUser();
 });
 
-test("Test #8 - Should return all users", async () => {
+test("Test #13 - Should return all users", async () => {
   const response = await supertest(app)
     .get(route)
     .set("Authorization", `Bearer ${user.token}`);
@@ -21,7 +21,7 @@ test("Test #8 - Should return all users", async () => {
   expect(response.statusCode).toBe(200);
 });
 
-test("Test #9 - Should return a user by his ID", async () => {
+test("Test #14 - Should return a user by his ID", async () => {
   const response = await supertest(app)
     .get(`${route}/${user.id}`)
     .set("Authorization", `Bearer ${user.token}`);
@@ -29,7 +29,7 @@ test("Test #9 - Should return a user by his ID", async () => {
   expect(response.statusCode).toBe(200);
 });
 
-test("Test #10 - Should return not found message when user does not exist", async () => {
+test("Test #15 - Should return not found message when user does not exist", async () => {
   const response = await supertest(app)
     .get(`${route}/${uuidv4()}`)
     .set("Authorization", `Bearer ${user.token}`);
@@ -38,7 +38,7 @@ test("Test #10 - Should return not found message when user does not exist", asyn
   expect(response.body.error).toBe("User not found");
 });
 
-test("Test #11 - Should update a user successfully", async () => {
+test("Test #16 - Should update a user successfully", async () => {
   const existingUser = generateUser();
 
   const signupResponse = await supertest(app)
@@ -63,7 +63,7 @@ test("Test #11 - Should update a user successfully", async () => {
   expect(updateUserResponse.body).toHaveProperty("role", updatedUser.role);
 });
 
-test("Test #12 - Should delete a user by his ID", async () => {
+test("Test #17 - Should delete a user by his ID", async () => {
   const existingUser = generateUser();
 
   const signupResponse = await supertest(app)

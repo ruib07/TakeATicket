@@ -25,7 +25,7 @@ beforeAll(async () => {
   ticket = ticketResponse.body[0];
 });
 
-test("Test #21 - Should return all notifications", async () => {
+test("Test #36 - Should return all notifications", async () => {
   const response = await supertest(app)
     .get(route)
     .set("Authorization", `Bearer ${user.token}`);
@@ -33,7 +33,7 @@ test("Test #21 - Should return all notifications", async () => {
   expect(response.statusCode).toBe(200);
 });
 
-test("Test #22 - Should return a notification by his ID", async () => {
+test("Test #37 - Should return a notification by his ID", async () => {
   const newNotification = generateNotification({
     ticket_id: ticket.id,
     user_id: user.id,
@@ -55,7 +55,7 @@ test("Test #22 - Should return a notification by his ID", async () => {
   expect(notificationResponse.statusCode).toBe(200);
 });
 
-test("Test #23 - Should return not found message when notification does not exist", async () => {
+test("Test #38 - Should return not found message when notification does not exist", async () => {
   const response = await supertest(app)
     .get(`${route}/${uuidv4()}`)
     .set("Authorization", `Bearer ${user.token}`);
@@ -64,7 +64,7 @@ test("Test #23 - Should return not found message when notification does not exis
   expect(response.body.error).toBe("Notification not found");
 });
 
-test("Test #24 - Should create a new notification successfully", async () => {
+test("Test #39 - Should create a new notification successfully", async () => {
   const newNotification = generateNotification({
     ticket_id: ticket.id,
     user_id: user.id,
@@ -84,7 +84,29 @@ test("Test #24 - Should create a new notification successfully", async () => {
   expect(response.body[0]).toHaveProperty("status", newNotification.status);
 });
 
-test("Test #25 - Should update a notification successfully", async () => {
+describe("Notification creation validation", () => {
+  const testTemplate = async (newData, errorMessage) => {
+    const notification = generateNotification({
+      ticket_id: ticket.id,
+      user_id: user.id,
+      admin_id: admin.id,
+      ...newData,
+    });
+
+    const response = await supertest(app)
+      .post(route)
+      .set("Authorization", `Bearer ${user.token}`)
+      .send(notification);
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error).toBe(errorMessage);
+  };
+
+  test("Test #40 - Insert a notification without a status", () =>
+    testTemplate({ status: null }, "Status is required!"));
+});
+
+test("Test #41 - Should update a notification successfully", async () => {
   const newNotification = generateNotification({
     ticket_id: ticket.id,
     user_id: user.id,
@@ -125,7 +147,7 @@ test("Test #25 - Should update a notification successfully", async () => {
   );
 });
 
-test("Test #26 - Should delete a notification by his ID", async () => {
+test("Test #42 - Should delete a notification by his ID", async () => {
   const existingNotification = generateNotification({
     ticket_id: ticket.id,
     user_id: user.id,
