@@ -4,21 +4,21 @@
   "description": "",
   "main": "knexfile.js",
   "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "start": "node src/server.js",
-    "lint": "eslint src/** test/** --fix",
-    "test": "export NODE_ENV=development&&jest --coverage --runInBand --forceExit",
-    "knex:migrate:test": "export NODE_ENV=development && knex migrate:latest --env development",
-    "knex:rollback:test": "export NODE_ENV=development&&knex migrate:rollback --env development",
-    "secure-mode": "export NODE_ENV=development && npm run knex:migrate:test && jest --watchAll",
-    "start:test": "export NODE_ENV=development && npm run knex:migrate:test && node src/server.js"
+    "test": "tests"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "lint": "eslint src/** tests/** --fix",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --coverage --runInBand --forceExit",
+    "knex:migrate:dev": "export NODE_ENV=development && knex migrate:latest --env development",
+    "knex:rollback:dev": "export NODE_ENV=development&&knex migrate:rollback --env development",
+    "secure-mode": "export NODE_ENV=development && npm run knex:migrate:dev && jest --watchAll",
+    "start:dev": "export NODE_ENV=development && npm run knex:migrate:dev && node src/server.js"
+  },
   "devDependencies": {
     "@babel/preset-env": "^7.26.9",
     "@babel/register": "^7.25.9",
