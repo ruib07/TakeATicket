@@ -1,43 +1,54 @@
-import { Image, StyleSheet, Platform } from "react-native";
+import { ITicket } from "@/@types/ticket";
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useEffect, useState } from "react";
-import { ITicket } from "@/@types/ticket";
-import { GetUserById } from "@/services/users.service";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import {
-  GetTicketsByUser,
   GetTicketsByAdmin,
+  GetTicketsByUser,
 } from "@/services/tickets.service";
+import { GetUserById } from "@/services/users.service";
+import { storage } from "@/utils/storage";
+import moment from "moment";
+import "moment/locale/pt-br";
+import { useEffect, useState } from "react";
+import { Image, StyleSheet } from "react-native";
+import { DataTable } from "react-native-paper";
 
 export default function HomeScreen() {
+  const [, setUserId] = useState<string | null>(null);
+  const [, setUserRole] = useState<string | null>(null);
   const [user, setUser] = useState<{ name: string } | null>(null);
   const [tickets, setTickets] = useState<ITicket[]>([]);
   const [, setError] = useState<string | null>(null);
-  const userRole =
-    localStorage.getItem("role") || sessionStorage.getItem("role");
-  const userId =
-    localStorage.getItem("userId") || sessionStorage.getItem("userId");
+  const tableBackground = useThemeColor({}, "tableHeader");
+  const rowBackground = useThemeColor({}, "tableRow");
 
   useEffect(() => {
-    if (!userId) return;
-
     const fetchUserAndTickets = async () => {
+      const storedUserId = await storage.getItem("userId");
+      const storedUserRole = await storage.getItem("role");
+
+      setUserId(storedUserId);
+      setUserRole(storedUserRole);
+
+      if (!storedUserId || !storedUserRole) return;
+
       try {
-        const userResponse = await GetUserById(userId);
+        const userResponse = await GetUserById(storedUserId);
         const { name } = userResponse.data;
         setUser({ name });
 
-        if (userRole === "admin") {
-          const ticketsResponse = await GetTicketsByAdmin(userId);
+        if (storedUserRole === "admin") {
+          const ticketsResponse = await GetTicketsByAdmin(storedUserId);
           setTickets(ticketsResponse.data);
         } else {
-          const ticketsResponse = await GetTicketsByUser(userId);
+          const ticketsResponse = await GetTicketsByUser(storedUserId);
           setTickets(ticketsResponse.data);
         }
       } catch (error) {
-        setError(`Failed to load data: ${error}`);
+        setError(`Failed to load user and his tickets: ${error}`);
       }
     };
 
@@ -59,46 +70,45 @@ export default function HomeScreen() {
         <HelloWave />
       </ThemedView>
       {!user ? (
-        <ThemedText type="subtitle">Need to authenticate!</ThemedText>
+        <ThemedText type="subtitle" style={{ textAlign: "center" }}>
+          Need to authenticate!
+        </ThemedText>
       ) : (
         <>
           <ThemedView style={styles.stepContainer}>
-            <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-            <ThemedText>
-              Edit{" "}
-              <ThemedText type="defaultSemiBold">
-                app/(tabs)/index.tsx
-              </ThemedText>{" "}
-              to see changes. Press{" "}
-              <ThemedText type="defaultSemiBold">
-                {Platform.select({
-                  ios: "cmd + d",
-                  android: "cmd + m",
-                  web: "F12",
-                })}
-              </ThemedText>{" "}
-              to open developer tools.
-            </ThemedText>
-          </ThemedView>
-          <ThemedView style={styles.stepContainer}>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-            <ThemedText>
-              Tap the Explore tab to learn more about what's included in this
-              starter app.
-            </ThemedText>
-          </ThemedView>
-          <ThemedView style={styles.stepContainer}>
-            <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-            <ThemedText>
-              When you're ready, run{" "}
-              <ThemedText type="defaultSemiBold">
-                npm run reset-project
-              </ThemedText>{" "}
-              to get a fresh <ThemedText type="defaultSemiBold">app</ThemedText>{" "}
-              directory. This will move the current{" "}
-              <ThemedText type="defaultSemiBold">app</ThemedText> to{" "}
-              <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-            </ThemedText>
+            <ThemedText type="subtitle">Tickets</ThemedText>
+            <DataTable style={{ padding: 15 }}>
+              <DataTable.Header style={{ backgroundColor: tableBackground }}>
+                <DataTable.Title style={{ flex: 2 }}>
+                  <ThemedText type="table">Title</ThemedText>
+                </DataTable.Title>
+                <DataTable.Title style={{ marginEnd: 4 }}>
+                  <ThemedText type="table">Deadline</ThemedText>
+                </DataTable.Title>
+                <DataTable.Title style={{ flex: 1 }}>
+                  <ThemedText type="table">Status</ThemedText>
+                </DataTable.Title>
+              </DataTable.Header>
+
+              {tickets.map((ticket, index) => (
+                <DataTable.Row
+                  key={index}
+                  style={{ backgroundColor: rowBackground }}
+                >
+                  <DataTable.Cell style={{ flex: 2 }}>
+                    <ThemedText type="table">{ticket.title}</ThemedText>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={{ flex: 1 }}>
+                    <ThemedText type="table">
+                      {moment(ticket.deadline).format("HH:mm")}
+                    </ThemedText>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={{ flex: 1 }}>
+                    <ThemedText type="table">{ticket.status}</ThemedText>
+                  </DataTable.Cell>
+                </DataTable.Row>
+              ))}
+            </DataTable>
           </ThemedView>
         </>
       )}
@@ -110,11 +120,13 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     gap: 8,
   },
   stepContainer: {
     gap: 8,
     marginBottom: 8,
+    alignItems: "center",
   },
   reactLogo: {
     height: 178,

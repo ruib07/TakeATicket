@@ -1,16 +1,17 @@
 import { ISignup } from "@/@types/authentication";
-import { Signup } from "@/services/authentications.service";
-import formStyles from "@/styles/formStyles";
-import { MaterialIcons } from "@expo/vector-icons";
-import React, { useState } from "react";
-import { Image, TouchableOpacity, Alert } from "react-native";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedInput } from "@/components/ThemedInput";
-import { ThemedPicker } from "@/components/ThemedPicker";
-import { router } from "expo-router";
+import { ThemedModal } from "@/components/ThemedModal";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import { useColorScheme } from "@/hooks/useColorScheme.web";
+import { Signup } from "@/services/authentications.service";
+import formStyles from "@/styles/formStyles";
 import globalStyles from "@/styles/globalStyles";
+import { MaterialIcons } from "@expo/vector-icons";
+import { router } from "expo-router";
+import React, { useState } from "react";
+import { Alert, Image, TouchableOpacity } from "react-native";
 
 export default function SignupScreen() {
   const [name, setName] = useState("");
@@ -18,6 +19,9 @@ export default function SignupScreen() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [role, setRole] = useState("");
+  const colorScheme = useColorScheme();
+
+  const iconColor = colorScheme === "light" ? "black" : "#9BA1A6";
 
   const handleSignup = async () => {
     const newUser: ISignup = {
@@ -74,13 +78,15 @@ export default function SignupScreen() {
             <MaterialIcons
               name={showPassword ? "visibility-off" : "visibility"}
               size={24}
-              color="black"
+              color={iconColor}
             />
           </TouchableOpacity>
         </ThemedView>
         <ThemedView style={formStyles.formField}>
-          <ThemedText type="subtitle">Choose your role:</ThemedText>
-          <ThemedPicker
+          <ThemedText type="subtitle" style={{ marginBottom: 8 }}>
+            Choose your role:
+          </ThemedText>
+          <ThemedModal
             selectedValue={role}
             onValueChange={(itemValue) => setRole(itemValue)}
             items={[

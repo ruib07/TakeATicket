@@ -1,26 +1,32 @@
 import { Tabs } from "expo-router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Platform } from "react-native";
 import { HapticTab } from "@/components/HapticTab";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { storage } from "@/utils/storage";
 
 type ValidIcons = "house.fill" | "lock.fill" | "person.fill";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const userId =
-    typeof window !== "undefined"
-      ? localStorage.getItem("userId") || sessionStorage.getItem("userId")
-      : null;
-  const userToken =
-    typeof window !== "undefined"
-      ? localStorage.getItem("token") || sessionStorage.getItem("token")
-      : null;
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-  const isAuthenticated = userId && userToken;
+  useEffect(() => {
+    const checkAuth = async () => {
+      const userId = await storage.getItem("userId");
+      const userToken = await storage.getItem("token");
+      setIsAuthenticated(!!(userId && userToken));
+    };
+
+    checkAuth();
+  }, []);
+
+  if (isAuthenticated === null) {
+    return null;
+  }
 
   const screens = [
     {

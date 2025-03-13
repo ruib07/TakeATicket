@@ -27,10 +27,8 @@ export default StyleSheet.create({
     borderWidth: 0.3,
   },
   eyeIcon: {
-    padding: 10,
-    marginTop: -50,
-    marginLeft: 280,
-    color: "#A1CEDC",
+    position: "absolute",
+    right: 10,
   },
   button: {
     backgroundColor: "#4F46E5",

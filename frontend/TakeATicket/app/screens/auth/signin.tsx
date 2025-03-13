@@ -3,9 +3,11 @@ import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedInput } from "@/components/ThemedInput";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { Signin } from "@/services/authentications.service";
 import formStyles from "@/styles/formStyles";
 import globalStyles from "@/styles/globalStyles";
+import { storage } from "@/utils/storage";
 import { MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
@@ -15,7 +17,9 @@ export default function SigninScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const colorScheme = useColorScheme();
+
+  const iconColor = colorScheme === "light" ? "black" : "#9BA1A6";
 
   const handleSignin = async () => {
     const signin: ISignin = {
@@ -29,15 +33,9 @@ export default function SigninScreen() {
       const userId = signinResponse.data.user.id;
       const userRole = signinResponse.data.user.role;
 
-      if (rememberMe) {
-        localStorage.setItem("token", token);
-        localStorage.setItem("userId", userId);
-        localStorage.setItem("role", userRole);
-      } else {
-        sessionStorage.setItem("token", token);
-        sessionStorage.setItem("userId", userId);
-        sessionStorage.setItem("role", userRole);
-      }
+      await storage.setItem("token", token);
+      await storage.setItem("userId", userId);
+      await storage.setItem("role", userRole);
 
       router.push("/");
     } catch (error: any) {
@@ -81,7 +79,7 @@ export default function SigninScreen() {
             <MaterialIcons
               name={showPassword ? "visibility-off" : "visibility"}
               size={24}
-              color="black"
+              color={iconColor}
             />
           </TouchableOpacity>
         </ThemedView>
@@ -93,22 +91,8 @@ export default function SigninScreen() {
             marginBottom: 15,
           }}
         >
-          <TouchableOpacity
-            style={{ flexDirection: "row", alignItems: "center" }}
-            onPress={() => setRememberMe(!rememberMe)}
-          >
-            <MaterialIcons
-              name={rememberMe ? "check-box" : "check-box-outline-blank"}
-              size={24}
-              color="lightblue"
-            />
-            <ThemedText>Remember Me</ThemedText>
-          </TouchableOpacity>
-
           <TouchableOpacity onPress={() => router.push("/")}>
-            <ThemedText type="link" style={{ marginLeft: 40 }}>
-              Forgot Password?
-            </ThemedText>
+            <ThemedText type="link">Forgot Password?</ThemedText>
           </TouchableOpacity>
         </ThemedView>
         <TouchableOpacity style={formStyles.button} onPress={handleSignin}>

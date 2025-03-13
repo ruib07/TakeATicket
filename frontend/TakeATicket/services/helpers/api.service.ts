@@ -1,7 +1,12 @@
 import axios from "axios";
 import { GetAuthHeaders } from "./getAuthHeaders";
+import { Platform } from "react-native";
 
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL;
+const isWeb = Platform.OS === "web";
+
+const API_BASE_URL = isWeb
+  ? "http://localhost:3005"
+  : process.env.EXPO_PUBLIC_API_BASE_URL;
 const API_VERSION = process.env.EXPO_PUBLIC_API_VERSION;
 
 const apiRequest = async (
@@ -12,7 +17,7 @@ const apiRequest = async (
 ) => {
   try {
     const url = `${API_BASE_URL}/${API_VERSION}/${endpoint}`;
-    const headers = withAuth ? GetAuthHeaders() : {};
+    const headers = withAuth ? await GetAuthHeaders() : {};
 
     const response = await axios({
       method,
@@ -23,6 +28,7 @@ const apiRequest = async (
 
     return response;
   } catch {
+    console.log(`${API_BASE_URL}/${API_VERSION}/${endpoint}`);
     throw new Error(`Failed to ${method} ${endpoint}`);
   }
 };

@@ -12,9 +12,17 @@ app.use(express.json());
 
 app.db = knex(knexfile[NODE_ENV]);
 
+const allowedOrigins = [process.env.WEB_ORIGIN, process.env.EXPO_ORIGIN];
+
 app.use(
   cors({
-    origin: "http://localhost:8081",
+    origin: function (origin, callback) {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: "GET, POST, PUT, DELETE",
     allowedHeaders: "Content-Type, Authorization",
     credentials: true,

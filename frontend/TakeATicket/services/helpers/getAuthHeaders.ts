@@ -1,6 +1,7 @@
-export function GetAuthHeaders() {
-  const token =
-    localStorage.getItem("token") || sessionStorage.getItem("token");
+import { storage } from "@/utils/storage";
+
+export async function GetAuthHeaders() {
+  const token = await storage.getItem("token");
 
   if (!token) return;
 
