@@ -8,8 +8,7 @@ export default StyleSheet.create({
     position: "absolute",
   },
   titleContainer: {
-    flexDirection: "row",
-    gap: 8,
+    alignItems: "center",
   },
   button: {
     backgroundColor: "#4F46E5",

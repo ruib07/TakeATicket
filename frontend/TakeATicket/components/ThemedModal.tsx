@@ -32,7 +32,7 @@ export function ThemedModal({
         <ThemedView
           style={[styles.selectedValue, { backgroundColor: backgroundColor }]}
         >
-          <ThemedText>{selectedValue || "Select a role..."}</ThemedText>
+          <ThemedText>{selectedValue || "Select..."}</ThemedText>
         </ThemedView>
       </ModalSelector>
     </ThemedView>

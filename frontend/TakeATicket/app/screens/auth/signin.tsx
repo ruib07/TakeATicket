@@ -49,7 +49,7 @@ export default function SigninScreen() {
       headerImage={
         <Image
           source={require("@/assets/images/partial-react-logo.png")}
-          style={formStyles.reactLogo}
+          style={globalStyles.reactLogo}
         />
       }
     >
@@ -64,24 +64,24 @@ export default function SigninScreen() {
             value={email}
             keyboardType="email-address"
           />
-        </ThemedView>
-        <ThemedView style={formStyles.formField}>
-          <ThemedInput
-            secureTextEntry={!showPassword}
-            onChangeText={setPassword}
-            placeholder="Password"
-            value={password}
-          />
-          <TouchableOpacity
-            style={formStyles.eyeIcon}
-            onPress={() => setShowPassword(!showPassword)}
-          >
-            <MaterialIcons
-              name={showPassword ? "visibility-off" : "visibility"}
-              size={24}
-              color={iconColor}
+          <ThemedView style={formStyles.formField}>
+            <ThemedInput
+              secureTextEntry={!showPassword}
+              onChangeText={setPassword}
+              placeholder="Password"
+              value={password}
             />
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={formStyles.eyeIcon}
+              onPress={() => setShowPassword(!showPassword)}
+            >
+              <MaterialIcons
+                name={showPassword ? "visibility-off" : "visibility"}
+                size={24}
+                color={iconColor}
+              />
+            </TouchableOpacity>
+          </ThemedView>
         </ThemedView>
         <ThemedView
           style={{

@@ -8,8 +8,10 @@ export type ThemedTextProps = TextProps & {
   type?:
     | "default"
     | "title"
+    | "titleSemiBold"
     | "defaultSemiBold"
     | "subtitle"
+    | "subtitleSemiBold"
     | "link"
     | "table";
 };
@@ -29,8 +31,10 @@ export function ThemedText({
         { color },
         type === "default" ? styles.default : undefined,
         type === "title" ? styles.title : undefined,
+        type === "titleSemiBold" ? styles.titleSemiBold : undefined,
         type === "defaultSemiBold" ? styles.defaultSemiBold : undefined,
         type === "subtitle" ? styles.subtitle : undefined,
+        type === "subtitleSemiBold" ? styles.subtitleSemiBold : undefined,
         type === "link" ? styles.link : undefined,
         type === "table" ? styles.table : undefined,
         style,
@@ -55,9 +59,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     lineHeight: 32,
   },
+  titleSemiBold: {
+    fontSize: 26,
+    lineHeight: 24,
+    fontWeight: "600",
+  },
   subtitle: {
     fontSize: 20,
     fontWeight: "bold",
+  },
+  subtitleSemiBold: {
+    fontSize: 20,
+    lineHeight: 24,
+    fontWeight: "600",
   },
   link: {
     lineHeight: 30,

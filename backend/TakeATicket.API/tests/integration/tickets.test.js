@@ -13,7 +13,7 @@ beforeAll(async () => {
   admin = await createAndAuthenticateUser({ role: "admin" });
 });
 
-test("Test #24 - Should return all tickets", async () => {
+test("Test #26 - Should return all tickets", async () => {
   const response = await supertest(app)
     .get(route)
     .set("Authorization", `Bearer ${user.token}`);
@@ -21,7 +21,7 @@ test("Test #24 - Should return all tickets", async () => {
   expect(response.statusCode).toBe(200);
 });
 
-test("Test #25 - Should return a ticket by his ID", async () => {
+test("Test #27 - Should return a ticket by his ID", async () => {
   const newTicket = generateTicket({
     user_id: user.id,
     admin_id: admin.id,
@@ -42,7 +42,7 @@ test("Test #25 - Should return a ticket by his ID", async () => {
   expect(ticketResponse.statusCode).toBe(200);
 });
 
-test("Test #26 - Should return not found message when ticket does not exist", async () => {
+test("Test #28 - Should return not found message when ticket does not exist", async () => {
   const response = await supertest(app)
     .get(`${route}/${uuidv4()}`)
     .set("Authorization", `Bearer ${user.token}`);
@@ -51,7 +51,7 @@ test("Test #26 - Should return not found message when ticket does not exist", as
   expect(response.body.error).toBe("Ticket not found");
 });
 
-test("Test #27 - Should return ticket when admin is valid", async () => {
+test("Test #29 - Should return ticket when admin is valid", async () => {
   const newTicket = generateTicket({
     user_id: user.id,
     admin_id: admin.id,
@@ -70,7 +70,7 @@ test("Test #27 - Should return ticket when admin is valid", async () => {
   expect(response.statusCode).toBe(200);
 });
 
-test("Test #28 - Should return ticket when user is valid", async () => {
+test("Test #30 - Should return ticket when user is valid", async () => {
   const newTicket = generateTicket({
     user_id: user.id,
     admin_id: admin.id,
@@ -89,7 +89,7 @@ test("Test #28 - Should return ticket when user is valid", async () => {
   expect(response.statusCode).toBe(200);
 });
 
-test("Test #29 - Should create a new ticket successfully", async () => {
+test("Test #31 - Should create a new ticket successfully", async () => {
   const newTicket = generateTicket({
     user_id: user.id,
     admin_id: admin.id,
@@ -126,17 +126,17 @@ describe("Ticket creation validation", () => {
     expect(response.body.error).toBe(errorMessage);
   };
 
-  test("Test #30 - Insert a ticket without a title", () =>
+  test("Test #32 - Insert a ticket without a title", () =>
     testTemplate({ title: null }, "Title is required!"));
-  test("Test #31 - Insert a ticket without a description", () =>
+  test("Test #33 - Insert a ticket without a description", () =>
     testTemplate({ description: null }, "Description is required!"));
-  test("Test #32 - Insert a ticket without a deadline", () =>
+  test("Test #34 - Insert a ticket without a deadline", () =>
     testTemplate({ deadline: null }, "Deadline is required!"));
-  test("Test #33 - Insert a ticket without a status", () =>
+  test("Test #35 - Insert a ticket without a status", () =>
     testTemplate({ status: null }, "Status is required!"));
 });
 
-test("Test #34 - Should update a ticket successfully", async () => {
+test("Test #36 - Should update a ticket successfully", async () => {
   const newTicket = generateTicket({
     user_id: user.id,
     admin_id: admin.id,
@@ -178,7 +178,7 @@ test("Test #34 - Should update a ticket successfully", async () => {
   expect(updateTicketResponse.body).toHaveProperty("admin_id", admin.id);
 });
 
-test("Test #35 - Should delete a ticket by his ID", async () => {
+test("Test #37 - Should delete a ticket by his ID", async () => {
   const existingTicket = generateTicket({
     user_id: user.id,
     admin_id: admin.id,

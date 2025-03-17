@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import ValidationError from "../errors/validationError.js";
 
 export const usersService = (app) => {
-  const findAll = () => app.db("users");
+  const findAll = (filter = {}) => app.db("users").where(filter);
 
   const find = (filter = {}) => app.db("users").where(filter).first();
 

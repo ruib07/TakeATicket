@@ -24,6 +24,18 @@ export const usersController = (app) => {
     }
   };
 
+  const getUsersByRole = async (req, res, next) => {
+    try {
+      const users = await userFromDb.findAll({ role: req.params.role });
+      if (!users) {
+        return res.status(404).json({ error: "No users for this role." });
+      }
+      return res.status(200).json(users);
+    } catch (error) {
+      return next(error);
+    }
+  };
+
   const updateUser = async (req, res, next) => {
     try {
       const updatedUserInfo = req.body;
@@ -46,6 +58,7 @@ export const usersController = (app) => {
   return {
     getAllUsers,
     getUserById,
+    getUsersByRole,
     updateUser,
     deleteUser,
   };

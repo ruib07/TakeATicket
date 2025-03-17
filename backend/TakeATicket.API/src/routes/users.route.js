@@ -7,6 +7,7 @@ export const usersRoutes = (app) => {
 
   router.get("/", controller.getAllUsers);
   router.get("/:id", controller.getUserById);
+  router.get("/byrole/:role", controller.getUsersByRole);
   router.put("/:id", controller.updateUser);
   router.delete("/:id", controller.deleteUser);
 

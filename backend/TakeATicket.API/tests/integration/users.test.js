@@ -29,7 +29,23 @@ test("Test #14 - Should return a user by his ID", async () => {
   expect(response.statusCode).toBe(200);
 });
 
-test("Test #15 - Should return not found message when user does not exist", async () => {
+test("Test #15 - Should return all users with role admin", async () => {
+  const response = await supertest(app)
+    .get(`${route}/byrole/admin`)
+    .set("Authorization", `bearer ${user.token}`);
+
+  expect(response.statusCode).toBe(200);
+});
+
+test("Test #16 - Should return all users with role user", async () => {
+  const response = await supertest(app)
+    .get(`${route}/byrole/user`)
+    .set("Authorization", `bearer ${user.token}`);
+
+  expect(response.statusCode).toBe(200);
+});
+
+test("Test #17 - Should return not found message when user does not exist", async () => {
   const response = await supertest(app)
     .get(`${route}/${uuidv4()}`)
     .set("Authorization", `Bearer ${user.token}`);
@@ -38,7 +54,7 @@ test("Test #15 - Should return not found message when user does not exist", asyn
   expect(response.body.error).toBe("User not found");
 });
 
-test("Test #16 - Should update a user successfully", async () => {
+test("Test #18 - Should update a user successfully", async () => {
   const existingUser = generateUser();
 
   const signupResponse = await supertest(app)
@@ -63,7 +79,7 @@ test("Test #16 - Should update a user successfully", async () => {
   expect(updateUserResponse.body).toHaveProperty("role", updatedUser.role);
 });
 
-test("Test #17 - Should delete a user by his ID", async () => {
+test("Test #19 - Should delete a user by his ID", async () => {
   const existingUser = generateUser();
 
   const signupResponse = await supertest(app)

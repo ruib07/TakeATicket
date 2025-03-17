@@ -19,7 +19,7 @@ beforeAll(async () => {
   user = signupResponse.body;
 });
 
-test("Test #18 - Should send a email to reset password when user exists", async () => {
+test("Test #20 - Should send a email to reset password when user exists", async () => {
   const response = await supertest(app)
     .post(`${route}/${sendEmailRoute}`)
     .send({
@@ -30,7 +30,7 @@ test("Test #18 - Should send a email to reset password when user exists", async 
   expect(response.body.message).toBe("Email sent successfully");
 });
 
-test("Test #19 - Should return success even if the user does not exist", async () => {
+test("Test #21 - Should return success even if the user does not exist", async () => {
   const response = await supertest(app)
     .post(`${route}/${sendEmailRoute}`)
     .send({
@@ -41,7 +41,7 @@ test("Test #19 - Should return success even if the user does not exist", async (
   expect(response.body.message).toBe("Email sent successfully");
 });
 
-test("Test #20 - Should change password when user put valid credentials", async () => {
+test("Test #22 - Should change password when user put valid credentials", async () => {
   const validToken = "validtoken456";
 
   await app.db("resetpasswordtokens").insert({
@@ -60,7 +60,7 @@ test("Test #20 - Should change password when user put valid credentials", async 
   expect(response.body.message).toBe("Password changed successfully");
 });
 
-test("Test #21 - Should return error message when passwords are mismatched", async () => {
+test("Test #23 - Should return error message when passwords are mismatched", async () => {
   const validToken = "validtoken123";
 
   await app.db("resetpasswordtokens").insert({
@@ -81,7 +81,7 @@ test("Test #21 - Should return error message when passwords are mismatched", asy
   expect(response.body.error).toBe("Passwords do not match");
 });
 
-test("Test #22 - Should return error message when token is expired", async () => {
+test("Test #24 - Should return error message when token is expired", async () => {
   const expiredToken = "expiredtoken123";
 
   await app.db("resetpasswordtokens").insert({
@@ -100,7 +100,7 @@ test("Test #22 - Should return error message when token is expired", async () =>
   expect(response.body.error).toBe("Invalid or expired token");
 });
 
-test("Test #23 - Should return error message when token is invalid", async () => {
+test("Test #25 - Should return error message when token is invalid", async () => {
   const changePassword = generateChangePassword();
 
   const response = await supertest(app)

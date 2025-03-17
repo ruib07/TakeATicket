@@ -45,7 +45,7 @@ export default function SignupScreen() {
       headerImage={
         <Image
           source={require("@/assets/images/partial-react-logo.png")}
-          style={formStyles.reactLogo}
+          style={globalStyles.reactLogo}
         />
       }
     >
@@ -55,34 +55,30 @@ export default function SignupScreen() {
         </ThemedText>
         <ThemedView style={formStyles.formField}>
           <ThemedInput onChangeText={setName} placeholder="Name" value={name} />
-        </ThemedView>
-        <ThemedView style={formStyles.formField}>
           <ThemedInput
             onChangeText={setEmail}
             placeholder="Email"
             value={email}
             keyboardType="email-address"
           />
-        </ThemedView>
-        <ThemedView style={formStyles.formField}>
-          <ThemedInput
-            secureTextEntry={!showPassword}
-            onChangeText={setPassword}
-            placeholder="Password"
-            value={password}
-          />
-          <TouchableOpacity
-            style={formStyles.eyeIcon}
-            onPress={() => setShowPassword(!showPassword)}
-          >
-            <MaterialIcons
-              name={showPassword ? "visibility-off" : "visibility"}
-              size={24}
-              color={iconColor}
+          <ThemedView style={formStyles.formField}>
+            <ThemedInput
+              secureTextEntry={!showPassword}
+              onChangeText={setPassword}
+              placeholder="Password"
+              value={password}
             />
-          </TouchableOpacity>
-        </ThemedView>
-        <ThemedView style={formStyles.formField}>
+            <TouchableOpacity
+              style={formStyles.eyeIcon}
+              onPress={() => setShowPassword(!showPassword)}
+            >
+              <MaterialIcons
+                name={showPassword ? "visibility-off" : "visibility"}
+                size={24}
+                color={iconColor}
+              />
+            </TouchableOpacity>
+          </ThemedView>
           <ThemedText type="subtitle" style={{ marginBottom: 8 }}>
             Choose your role:
           </ThemedText>
