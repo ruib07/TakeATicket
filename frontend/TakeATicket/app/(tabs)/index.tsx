@@ -3,6 +3,7 @@ import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { useAuth } from "@/context/AuthContext";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import {
@@ -14,7 +15,6 @@ import {
 import { GetUserById } from "@/services/users.service";
 import formStyles from "@/styles/formStyles";
 import globalStyles from "@/styles/globalStyles";
-import { storage } from "@/utils/storage";
 import { router } from "expo-router";
 import moment from "moment";
 import "moment/locale/pt-br";
@@ -23,46 +23,43 @@ import { Alert, Image, TouchableOpacity } from "react-native";
 import { DataTable, IconButton } from "react-native-paper";
 
 export default function HomeScreen() {
-  const [, setUserId] = useState<string | null>(null);
-  const [userRole, setUserRole] = useState<string | null>(null);
   const [user, setUser] = useState<{ name: string } | null>(null);
   const [tickets, setTickets] = useState<ITicket[]>([]);
   const [, setError] = useState<string | null>(null);
+  
   const tableBackground = useThemeColor({}, "tableHeader");
   const rowBackground = useThemeColor({}, "tableRow");
   const colorScheme = useColorScheme();
 
   const iconColor = colorScheme === "light" ? "black" : "#9BA1A6";
 
+  const { userId, userRole } = useAuth();
+
   useEffect(() => {
     const fetchUserAndTickets = async () => {
-      const storedUserId = await storage.getItem("userId");
-      const storedUserRole = await storage.getItem("role");
-
-      setUserId(storedUserId);
-      setUserRole(storedUserRole);
-
-      if (!storedUserId || !storedUserRole) return;
+      if (!userId || !userRole) {
+        setUser(null);
+        setTickets([]);
+        return;
+      }
 
       try {
-        const userResponse = await GetUserById(storedUserId);
-        const { name } = userResponse.data;
-        setUser({ name });
+        const userResponse = await GetUserById(userId);
+        setUser({ name: userResponse.data.name });
 
-        if (storedUserRole === "admin") {
-          const ticketsResponse = await GetTicketsByAdmin(storedUserId);
-          setTickets(ticketsResponse.data);
-        } else {
-          const ticketsResponse = await GetTicketsByUser(storedUserId);
-          setTickets(ticketsResponse.data);
-        }
+        const ticketsResponse =
+          userRole === "admin"
+            ? await GetTicketsByAdmin(userId)
+            : await GetTicketsByUser(userId);
+
+        setTickets(ticketsResponse.data);
       } catch (error) {
-        setError(`Failed to load user and his tickets: ${error}`);
+        console.error("Failed to load user and tickets:", error);
       }
     };
 
     fetchUserAndTickets();
-  }, []);
+  }, [userId, userRole]);
 
   const handleTicketUpdate = async (ticketId: string, newStatus: string) => {
     try {

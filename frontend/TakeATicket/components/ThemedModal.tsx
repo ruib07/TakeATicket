@@ -1,8 +1,8 @@
+import { useThemeColor } from "@/hooks/useThemeColor";
 import { StyleSheet } from "react-native";
 import ModalSelector from "react-native-modal-selector";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
-import { useThemeColor } from "@/hooks/useThemeColor";
 
 export type ThemedModalProps = {
   selectedValue: string;

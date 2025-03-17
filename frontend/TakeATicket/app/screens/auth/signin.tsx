@@ -3,6 +3,7 @@ import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedInput } from "@/components/ThemedInput";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { useAuth } from "@/context/AuthContext";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { Signin } from "@/services/authentications.service";
 import formStyles from "@/styles/formStyles";
@@ -18,6 +19,7 @@ export default function SigninScreen() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const colorScheme = useColorScheme();
+  const { setAuth } = useAuth();
 
   const iconColor = colorScheme === "light" ? "black" : "#9BA1A6";
 
@@ -36,6 +38,10 @@ export default function SigninScreen() {
       await storage.setItem("token", token);
       await storage.setItem("userId", userId);
       await storage.setItem("role", userRole);
+
+      setAuth(userId, userRole);
+      setEmail("");
+      setPassword("");
 
       router.push("/");
     } catch (error: any) {

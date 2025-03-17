@@ -28,7 +28,6 @@ const apiRequest = async (
 
     return response;
   } catch {
-    console.log(`${API_BASE_URL}/${API_VERSION}/${endpoint}`);
     throw new Error(`Failed to ${method} ${endpoint}`);
   }
 };

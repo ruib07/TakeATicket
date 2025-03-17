@@ -10,10 +10,10 @@ import { GetUsersByRole } from "@/services/users.service";
 import formStyles from "@/styles/formStyles";
 import globalStyles from "@/styles/globalStyles";
 import { storage } from "@/utils/storage";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Alert, Button, Image, Platform, TouchableOpacity } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function TicketCreation() {
   const [title, setTitle] = useState("");

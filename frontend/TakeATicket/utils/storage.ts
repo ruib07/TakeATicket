@@ -12,7 +12,6 @@ export const storage = {
         return await AsyncStorage.getItem(key);
       }
     } catch (error) {
-      console.error("Error:", error);
       return null;
     }
   },

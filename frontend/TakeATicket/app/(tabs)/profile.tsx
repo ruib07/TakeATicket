@@ -3,39 +3,50 @@ import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { IconSymbol } from "@/components/ui/IconSymbol";
+import { useAuth } from "@/context/AuthContext";
 import { GetUserById } from "@/services/users.service";
 import globalStyles from "@/styles/globalStyles";
 import profileStyles from "@/styles/profileStyles";
 import { storage } from "@/utils/storage";
+import { useFocusEffect } from "@react-navigation/native";
 import { router } from "expo-router";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { TouchableOpacity } from "react-native";
 
 export default function TabTwoScreen() {
   const [user, setUser] = useState<IUser>();
+  const { setAuth } = useAuth();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const storedUserId = await storage.getItem("userId");
+  useFocusEffect(
+    useCallback(() => {
+      const fetchUser = async () => {
+        const storedUserId = await storage.getItem("userId");
 
-      if (!storedUserId) return;
+        if (!storedUserId) {
+          setUser(undefined);
+          return;
+        }
 
-      try {
-        const userResponse = await GetUserById(storedUserId);
-        setUser(userResponse.data);
-      } catch (error) {
-        console.error(`Failed to load user: ${error}`);
-      }
-    };
+        try {
+          const userResponse = await GetUserById(storedUserId);
+          setUser(userResponse.data);
+        } catch (error) {
+          console.error(`Failed to load user: ${error}`);
+        }
+      };
 
-    fetchUser();
-  });
+      fetchUser();
+    }, [user])
+  );
 
   const handleSignout = async () => {
     await storage.removeItem("token");
     await storage.removeItem("userId");
     await storage.removeItem("role");
 
+    setUser(undefined);
+
+    setAuth(null, null);
     router.replace("/");
   };
 

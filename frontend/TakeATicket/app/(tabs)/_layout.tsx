@@ -1,12 +1,12 @@
-import { Tabs } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { Platform } from "react-native";
 import { HapticTab } from "@/components/HapticTab";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { storage } from "@/utils/storage";
+import { Tabs } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { Platform } from "react-native";
 
 type ValidIcons = "house.fill" | "lock.fill" | "person.fill";
 
@@ -22,6 +22,10 @@ export default function TabLayout() {
     };
 
     checkAuth();
+
+    const interval = setInterval(checkAuth, 500);
+
+    return () => clearInterval(interval);
   }, []);
 
   if (isAuthenticated === null) {
