@@ -98,7 +98,12 @@ export default function SigninScreen() {
           }}
         >
           <TouchableOpacity onPress={() => router.push("/")}>
-            <ThemedText type="link">Forgot Password?</ThemedText>
+            <ThemedText
+              type="link"
+              onPress={() => router.push("/screens/recoverpassword/sendemail")}
+            >
+              Forgot Password?
+            </ThemedText>
           </TouchableOpacity>
         </ThemedView>
         <TouchableOpacity style={formStyles.button} onPress={handleSignin}>

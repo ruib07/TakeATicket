@@ -22,6 +22,7 @@ export async function up(knex) {
       .onDelete("CASCADE")
       .notNull();
 
+    t.string("content").notNull();
     t.string("status", 50).notNull().defaultTo("unread");
     t.timestamp("created_at").defaultTo(knex.fn.now()).notNull();
   });

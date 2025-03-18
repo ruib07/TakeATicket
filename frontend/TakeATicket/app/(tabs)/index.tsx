@@ -1,7 +1,9 @@
 import { ITicket } from "@/@types/ticket";
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { ThemedInput } from "@/components/ThemedInput";
 import { ThemedText } from "@/components/ThemedText";
+import { ThemedTextArea } from "@/components/ThemedTextArea";
 import { ThemedView } from "@/components/ThemedView";
 import { useAuth } from "@/context/AuthContext";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
@@ -15,18 +17,21 @@ import {
 import { GetUserById } from "@/services/users.service";
 import formStyles from "@/styles/formStyles";
 import globalStyles from "@/styles/globalStyles";
+import modalStyles from "@/styles/modalStyles";
 import { router } from "expo-router";
 import moment from "moment";
 import "moment/locale/pt-br";
 import { useEffect, useState } from "react";
-import { Alert, Image, TouchableOpacity } from "react-native";
+import { Alert, Image, Modal, TouchableOpacity, View } from "react-native";
 import { DataTable, IconButton } from "react-native-paper";
 
 export default function HomeScreen() {
   const [user, setUser] = useState<{ name: string } | null>(null);
   const [tickets, setTickets] = useState<ITicket[]>([]);
+  const [editingTicket, setEditingTicket] = useState<ITicket | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
   const [, setError] = useState<string | null>(null);
-  
+
   const tableBackground = useThemeColor({}, "tableHeader");
   const rowBackground = useThemeColor({}, "tableRow");
   const colorScheme = useColorScheme();
@@ -53,27 +58,36 @@ export default function HomeScreen() {
             : await GetTicketsByUser(userId);
 
         setTickets(ticketsResponse.data);
-      } catch (error) {
-        console.error("Failed to load user and tickets:", error);
+      } catch {
+        setError("Failed to load user and tickets");
       }
     };
 
     fetchUserAndTickets();
   }, [userId, userRole]);
 
-  const handleTicketUpdate = async (ticketId: string, newStatus: string) => {
+  const handleTicketUpdate = async (
+    ticketId: string,
+    updates: Partial<ITicket>
+  ) => {
     try {
       const ticketToUpdate = tickets.find((ticket) => ticket.id === ticketId);
       if (!ticketToUpdate) return;
 
-      await UpdateTicket(ticketId, { ...ticketToUpdate, status: newStatus });
+      const updatedTicket =
+        userRole === "admin"
+          ? { status: updates.status ?? ticketToUpdate.status }
+          : { ...updates, status: ticketToUpdate.status };
+
+      await UpdateTicket(ticketId, updatedTicket);
       setTickets((prevTickets) =>
         prevTickets.map((ticket) =>
-          ticket.id === ticketId ? { ...ticket, status: newStatus } : ticket
+          ticket.id === ticketId ? { ...ticket, ...updatedTicket } : ticket
         )
       );
-      Alert.alert(`Ticket ${newStatus} successfully.`);
-    } catch {
+      Alert.alert("Ticket updated successfully.");
+      setModalVisible(false);
+    } catch (error) {
       setError("Failed to update ticket.");
     }
   };
@@ -156,7 +170,10 @@ export default function HomeScreen() {
                           icon="pencil"
                           size={18}
                           iconColor={iconColor}
-                          onPress={() => {}}
+                          onPress={() => {
+                            setEditingTicket(ticket);
+                            setModalVisible(true);
+                          }}
                         />
                         <IconButton
                           icon="delete"
@@ -172,7 +189,9 @@ export default function HomeScreen() {
                           size={18}
                           iconColor={iconColor}
                           onPress={() =>
-                            handleTicketUpdate(ticket.id!, "completed")
+                            handleTicketUpdate(ticket.id!, {
+                              status: "completed",
+                            })
                           }
                         />
                         <IconButton
@@ -180,7 +199,9 @@ export default function HomeScreen() {
                           size={18}
                           iconColor={iconColor}
                           onPress={() =>
-                            handleTicketUpdate(ticket.id!, "rejected")
+                            handleTicketUpdate(ticket.id!, {
+                              status: "rejected",
+                            })
                           }
                         />
                       </>
@@ -192,7 +213,7 @@ export default function HomeScreen() {
             {userRole === "user" && (
               <TouchableOpacity
                 style={formStyles.button}
-                onPress={() => router.push("/screens/tickets/createTicket")}
+                onPress={() => router.push("/screens/tickets/createticket")}
               >
                 <ThemedText style={formStyles.buttonText}>
                   New Ticket
@@ -201,6 +222,68 @@ export default function HomeScreen() {
             )}
           </ThemedView>
         </>
+      )}
+      {modalVisible && editingTicket && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={modalStyles.container}>
+            <ThemedView style={modalStyles.content}>
+              <ThemedText type="title">Edit Ticket</ThemedText>
+              <ThemedInput
+                style={formStyles.input}
+                value={editingTicket.title}
+                onChangeText={(text) =>
+                  setEditingTicket((prev) =>
+                    prev ? { ...prev, title: text } : prev
+                  )
+                }
+              />
+              <ThemedTextArea
+                style={formStyles.input}
+                value={editingTicket.description}
+                onChangeText={(text) =>
+                  setEditingTicket((prev) =>
+                    prev ? { ...prev, description: text } : prev
+                  )
+                }
+              />
+              <ThemedInput
+                style={formStyles.input}
+                value={moment(editingTicket.deadline).format(
+                  "YYYY-MM-DD HH:mm"
+                )}
+                onChangeText={(text) =>
+                  setEditingTicket((prev) =>
+                    prev
+                      ? {
+                          ...prev,
+                          deadline: moment(
+                            text,
+                            "YYYY-MM-DD HH:mm"
+                          ).toISOString(),
+                        }
+                      : prev
+                  )
+                }
+              />
+              <TouchableOpacity
+                style={formStyles.button}
+                onPress={() =>
+                  handleTicketUpdate(editingTicket.id!, editingTicket)
+                }
+              >
+                <ThemedText style={formStyles.buttonText}>Save</ThemedText>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <ThemedText>Cancel</ThemedText>
+              </TouchableOpacity>
+            </ThemedView>
+          </View>
+        </Modal>
       )}
     </ParallaxScrollView>
   );

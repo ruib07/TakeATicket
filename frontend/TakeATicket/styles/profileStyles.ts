@@ -8,7 +8,14 @@ export default StyleSheet.create({
     position: "absolute",
   },
   titleContainer: {
+    paddingLeft: 20,
+    paddingRight: 20,
+    justifyContent: "center",
     alignItems: "center",
+  },
+  text: {
+    fontSize: 18,
+    marginBottom: 6,
   },
   button: {
     backgroundColor: "#4F46E5",

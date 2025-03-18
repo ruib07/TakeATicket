@@ -1,3 +1,4 @@
+import { INotification } from "@/@types/notification";
 import { ITicket } from "@/@types/ticket";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedInput } from "@/components/ThemedInput";
@@ -5,6 +6,7 @@ import { ThemedModal } from "@/components/ThemedModal";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedTextArea } from "@/components/ThemedTextArea";
 import { ThemedView } from "@/components/ThemedView";
+import { CreateNotification } from "@/services/notifications.service";
 import { CreateTicket } from "@/services/tickets.service";
 import { GetUsersByRole } from "@/services/users.service";
 import formStyles from "@/styles/formStyles";
@@ -55,7 +57,25 @@ export default function TicketCreation() {
     };
 
     try {
-      await CreateTicket(newTicket);
+      const ticketResponse = await CreateTicket(newTicket);
+
+      if (!ticketResponse) throw new Error("Failed to create ticket");
+
+      const newNotification: INotification = {
+        ticket_id: ticketResponse.data[0].id,
+        user_id: userId!,
+        admin_id,
+        content: `New ticket assigned: ${newTicket.title}`,
+        status: "unread",
+      };
+
+      const notificationResponse = await CreateNotification(newNotification);
+
+      if (!notificationResponse)
+        throw new Error("Failed to create notification");
+
+      Alert.alert("Success", "Ticket and Notification created successfully!");
+      router.push("/");
       router.push("/");
     } catch (error: any) {
       Alert.alert("Something went wrong", error.message || "Unknown error");

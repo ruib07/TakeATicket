@@ -6,6 +6,8 @@ export const notificationsService = (app) => {
   const find = (filter = {}) => app.db("notifications").where(filter).first();
 
   const save = (newNotification) => {
+    if (!newNotification.content)
+      throw new ValidationError("Content is required!");
     if (!newNotification.status)
       throw new ValidationError("Status is required!");
 

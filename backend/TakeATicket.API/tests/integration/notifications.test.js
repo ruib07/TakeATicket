@@ -102,11 +102,13 @@ describe("Notification creation validation", () => {
     expect(response.body.error).toBe(errorMessage);
   };
 
-  test("Test #42 - Insert a notification without a status", () =>
+  test("Test #42 - Insert a notification without a content", () =>
+    testTemplate({ content: null }, "Content is required!"));
+  test("Test #43 - Insert a notification without a status", () =>
     testTemplate({ status: null }, "Status is required!"));
 });
 
-test("Test #43 - Should update a notification successfully", async () => {
+test("Test #44 - Should update a notification successfully", async () => {
   const newNotification = generateNotification({
     ticket_id: ticket.id,
     user_id: user.id,
@@ -147,7 +149,7 @@ test("Test #43 - Should update a notification successfully", async () => {
   );
 });
 
-test("Test #44 - Should delete a notification by his ID", async () => {
+test("Test #45 - Should delete a notification by his ID", async () => {
   const existingNotification = generateNotification({
     ticket_id: ticket.id,
     user_id: user.id,

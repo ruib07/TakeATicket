@@ -6,5 +6,4 @@ export interface ITicket {
   status: string;
   user_id: string;
   admin_id: string;
-  created_at?: string;
 }
