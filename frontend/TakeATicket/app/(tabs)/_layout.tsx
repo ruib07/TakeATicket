@@ -8,7 +8,7 @@ import { Tabs } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Platform } from "react-native";
 
-type ValidIcons = "house.fill" | "lock.fill" | "person.fill";
+type ValidIcons = "house.fill" | "lock.fill" | "person.fill" | "bell.fill";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -44,12 +44,19 @@ export default function TabLayout() {
           title: "Authentication",
           icon: "lock.fill" as ValidIcons,
         }
-      : {
-          name: "profile",
-          title: "Profile",
-          icon: "person.fill" as ValidIcons,
-        },
-  ].filter(Boolean);
+      : [
+          {
+            name: "profile",
+            title: "Profile",
+            icon: "person.fill" as ValidIcons,
+          },
+          {
+            name: "notifications",
+            title: "Notifications",
+            icon: "bell.fill" as ValidIcons,
+          },
+        ],
+  ].flat();
 
   return (
     <Tabs

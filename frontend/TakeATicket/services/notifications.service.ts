@@ -4,8 +4,11 @@ import apiRequest from "./helpers/api.service";
 export const GetNotifications = async () =>
   apiRequest("GET", "notifications", undefined, true);
 
-export const GetNotificationById = async (notificationId: string) =>
-  apiRequest("GET", `notifications/${notificationId}`, undefined, true);
+export const GetNotificationsByAdmin = async (adminId: string) =>
+  apiRequest("GET", `notifications/byadmin/${adminId}`, undefined, true);
+
+export const GetNotificationsByUser = async (userId: string) =>
+  apiRequest("GET", `notifications/byuser/${userId}`, undefined, true);
 
 export const CreateNotification = async (newNotification: INotification) =>
   apiRequest("POST", "notifications", newNotification, true);

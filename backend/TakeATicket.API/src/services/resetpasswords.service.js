@@ -15,7 +15,7 @@ export const resetPasswordsService = (app) => {
       user_id: userId,
     });
 
-    const resetLink = `http://localhost:8081/change-password?token=${token}`;
+    const resetLink = `http://localhost:3000/change-password?token=${token}`;
 
     const transporter = createTransport({
       service: "gmail",

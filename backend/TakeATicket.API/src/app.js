@@ -12,7 +12,11 @@ app.use(express.json());
 
 app.db = knex(knexfile[NODE_ENV]);
 
-const allowedOrigins = [process.env.WEB_ORIGIN, process.env.EXPO_ORIGIN];
+const allowedOrigins = [
+  process.env.WEB_ORIGIN_1,
+  process.env.WEB_ORIGIN_2,
+  process.env.EXPO_ORIGIN,
+];
 
 app.use(
   cors({

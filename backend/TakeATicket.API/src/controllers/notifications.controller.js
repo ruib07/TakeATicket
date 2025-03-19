@@ -24,6 +24,38 @@ export const notificationsController = (app) => {
     }
   };
 
+  const getNotificationsByAdmin = async (req, res, next) => {
+    try {
+      const notifications = await notificationFromDb.findAll({
+        admin_id: req.params.admin_id,
+      });
+      if (!notifications) {
+        return res
+          .status(404)
+          .json({ error: "No notifications found for this admin." });
+      }
+      return res.status(200).json(notifications);
+    } catch (error) {
+      return next(error);
+    }
+  };
+
+  const getNotificationsByUser = async (req, res, next) => {
+    try {
+      const notifications = await notificationFromDb.findAll({
+        user_id: req.params.user_id,
+      });
+      if (!notifications) {
+        return res
+          .status(404)
+          .json({ error: "No notifications found for this user." });
+      }
+      return res.status(200).json(notifications);
+    } catch (error) {
+      return next(error);
+    }
+  };
+
   const createNotification = async (req, res, next) => {
     try {
       const newNotification = req.body;
@@ -59,6 +91,8 @@ export const notificationsController = (app) => {
   return {
     getAllNotifications,
     getNotificationById,
+    getNotificationsByAdmin,
+    getNotificationsByUser,
     createNotification,
     updateNotification,
     deleteNotification,

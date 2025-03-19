@@ -1,11 +1,9 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
+  takeaticketLogo: {
+    height: 278,
+    width: 490,
     position: "absolute",
   },
   container: {

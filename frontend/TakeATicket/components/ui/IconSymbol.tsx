@@ -7,6 +7,7 @@ const MAPPING = {
   "house.fill": "home",
   "lock.fill": "lock",
   "person.fill": "person",
+  "bell.fill": "notifications",
   "chevron.left.forwardslash.chevron.right": "code",
   "chevron.right": "chevron-right",
 } as Partial<

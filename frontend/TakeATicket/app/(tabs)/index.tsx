@@ -1,3 +1,4 @@
+import { INotification } from "@/@types/notification";
 import { ITicket } from "@/@types/ticket";
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
@@ -8,6 +9,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { useAuth } from "@/context/AuthContext";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { CreateNotification } from "@/services/notifications.service";
 import {
   DeleteTicket,
   GetTicketsByAdmin,
@@ -80,6 +82,26 @@ export default function HomeScreen() {
           : { ...updates, status: ticketToUpdate.status };
 
       await UpdateTicket(ticketId, updatedTicket);
+
+      if (
+        userRole === "admin" &&
+        (updatedTicket.status === "completed" ||
+          updatedTicket.status === "rejected")
+      ) {
+        const newNotification: INotification = {
+          ticket_id: ticketId,
+          user_id: ticketToUpdate.user_id,
+          admin_id: ticketToUpdate.admin_id,
+          content:
+            updatedTicket.status === "completed"
+              ? "Your ticket has been completed"
+              : "Your ticket has been rejected",
+          status: "unread",
+        };
+
+        await CreateNotification(newNotification);
+      }
+
       setTickets((prevTickets) =>
         prevTickets.map((ticket) =>
           ticket.id === ticketId ? { ...ticket, ...updatedTicket } : ticket
@@ -109,8 +131,8 @@ export default function HomeScreen() {
       headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
       headerImage={
         <Image
-          source={require("@/assets/images/partial-react-logo.png")}
-          style={globalStyles.reactLogo}
+          source={require("@/assets/images/takeaticketbanner.png")}
+          style={globalStyles.takeaticketLogo}
         />
       }
     >
@@ -148,11 +170,20 @@ export default function HomeScreen() {
                   style={{ backgroundColor: rowBackground }}
                 >
                   <DataTable.Cell style={{ flex: 2 }}>
-                    <ThemedText type="table">{ticket.title}</ThemedText>
+                    <ThemedText
+                      type="table"
+                      onPress={() =>
+                        router.push(
+                          `/screens/tickets/ticketdetails?id=${ticket.id}`
+                        )
+                      }
+                    >
+                      {ticket.title}
+                    </ThemedText>
                   </DataTable.Cell>
                   <DataTable.Cell style={{ flex: 1 }}>
                     <ThemedText type="table">
-                      {moment(ticket.deadline).format("HH:mm")}
+                      {moment(ticket.deadline).format("DD/MM-HH:mm")}
                     </ThemedText>
                   </DataTable.Cell>
                   <DataTable.Cell style={{ flex: 1 }}>
