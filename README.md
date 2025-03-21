@@ -34,7 +34,7 @@ The application allows dark and light mode so that the user can use the applicat
 With this steps, you can have the project on your computer without any problem. Have a great day 😄
 
 Main Screen (Users):
-![IndexUsers](https://github.com/user-attachments/assets/931773d6-0142-4eb3-89cd-c78312c992c7)
+![IndexUsers](https://github.com/user-attachments/assets/931773d6-0142-4eb3-89cd-c78312c992c7 | width=400)
 
 Main Screen (Admins):
 ![IndexAdmins](https://github.com/user-attachments/assets/cae095de-ee4d-4b6e-af1e-1f2dcf41265b)
