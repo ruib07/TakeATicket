@@ -34,43 +34,43 @@ The application allows dark and light mode so that the user can use the applicat
 With this steps, you can have the project on your computer without any problem. Have a great day 😄
 
 Main Screen (Users):
-![IndexUsers](https://github.com/user-attachments/assets/931773d6-0142-4eb3-89cd-c78312c992c7 | width=400)
+![IndexUsers](https://github.com/user-attachments/assets/931773d6-0142-4eb3-89cd-c78312c992c7 | width=500)
 
 Main Screen (Admins):
-![IndexAdmins](https://github.com/user-attachments/assets/cae095de-ee4d-4b6e-af1e-1f2dcf41265b)
+![IndexAdmins](https://github.com/user-attachments/assets/cae095de-ee4d-4b6e-af1e-1f2dcf41265b | width=500)
 
-Ticket details (Users):
-![TicketDetailsUsers](https://github.com/user-attachments/assets/2f090455-0f54-4d55-a925-681d9ac6a6f1)
+Ticket Details (Users):
+![TicketDetailsUsers](https://github.com/user-attachments/assets/2f090455-0f54-4d55-a925-681d9ac6a6f1 | width=500)
 
-Ticket details (admins):
-![TicketDetails](https://github.com/user-attachments/assets/7eec03ab-71ae-4259-b359-33c47d274d04)
+Ticket Details (Admins):
+![TicketDetails](https://github.com/user-attachments/assets/7eec03ab-71ae-4259-b359-33c47d274d04 | width=500)
 
-Edit ticket informations (Users):
-![EditTicket](https://github.com/user-attachments/assets/7fd7d1b9-4642-45ab-84e7-07aec52d5ea1)
+Edit Ticket Information (Users):
+![EditTicket](https://github.com/user-attachments/assets/7fd7d1b9-4642-45ab-84e7-07aec52d5ea1 | width=500)
 
-Create ticket (Users):
-![CreateTicket](https://github.com/user-attachments/assets/2f6087ee-37d6-4f48-8c2a-fbd4f5585d62)
+Create Ticket (Users):
+![CreateTicket](https://github.com/user-attachments/assets/2f6087ee-37d6-4f48-8c2a-fbd4f5585d62 | width=500)
 
 Profile:
-![Profile](https://github.com/user-attachments/assets/4dbf153c-5076-4fd8-a0d6-906a3b3f043e)
+![Profile](https://github.com/user-attachments/assets/4dbf153c-5076-4fd8-a0d6-906a3b3f043e | width=500)
 
-Edit information profile:
-![EditInforProfile](https://github.com/user-attachments/assets/45bdf2e1-cb05-480d-980b-532e1050c146)
+Edit Information Profile:
+![EditInforProfile](https://github.com/user-attachments/assets/45bdf2e1-cb05-480d-980b-532e1050c146 | width=500)
 
 Notifications:
-![Notifications](https://github.com/user-attachments/assets/362d8beb-a4b1-4146-b182-90bd7b2d4703)
+![Notifications](https://github.com/user-attachments/assets/362d8beb-a4b1-4146-b182-90bd7b2d4703 | width=500)
 
-Sign up:
-![Signup](https://github.com/user-attachments/assets/91aa3282-268a-4533-aac9-a8bb2614d5e1)
+Sign Up:
+![Signup](https://github.com/user-attachments/assets/91aa3282-268a-4533-aac9-a8bb2614d5e1 | width=500)
 
-Sign in:
-![Signin](https://github.com/user-attachments/assets/ec974fe8-aeed-4b5b-8a06-540e05555e71)
+Sign In:
+![Signin](https://github.com/user-attachments/assets/ec974fe8-aeed-4b5b-8a06-540e05555e71 | width=500)
 
-Recover Password/Send Email:
-![RecoverPassword](https://github.com/user-attachments/assets/8593a909-95ca-47ff-91b3-1b732c1f59ff)
+Recover Password / Send Email:
+![RecoverPassword](https://github.com/user-attachments/assets/8593a909-95ca-47ff-91b3-1b732c1f59ff | width=500)
 
-Recover Password/Change Password:
-<img width="1704" alt="ChangePassword" src="https://github.com/user-attachments/assets/78687135-125d-42ab-aa1c-84a258bac111" />
+Recover Password / Change Password:
+<img width="500" alt="ChangePassword" src="https://github.com/user-attachments/assets/78687135-125d-42ab-aa1c-84a258bac111" /> 
 
 
 
