@@ -20,6 +20,8 @@ export default function ProfileScreen() {
   const [editableName, setEditableName] = useState<string>("");
   const [editableEmail, setEditableEmail] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [originalName, setOriginalName] = useState<string>("");
+  const [originalEmail, setOriginalEmail] = useState<string>("");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -37,6 +39,8 @@ export default function ProfileScreen() {
         setUser(userResponse.data);
         setEditableName(userResponse.data.name);
         setEditableEmail(userResponse.data.email);
+        setOriginalName(userResponse.data.name);
+        setOriginalEmail(userResponse.data.email);
       } catch {
         setError("Failed to load user.");
       }
@@ -58,6 +62,12 @@ export default function ProfileScreen() {
     } catch (error) {
       setError("Failed to update user.");
     }
+  };
+
+  const handleCancelEdit = () => {
+    setEditableName(originalName);
+    setEditableEmail(originalEmail);
+    setIsEditing(false);
   };
 
   const handleSignout = async () => {
@@ -106,23 +116,46 @@ export default function ProfileScreen() {
         />
       </ThemedView>
       <ThemedView style={globalStyles.container}>
-        <TouchableOpacity
-          style={profileStyles.button}
-          onPress={() => {
-            if (isEditing) {
-              handleUserUpdate(user?.id || "", {
-                name: editableName,
-                email: editableEmail,
-              });
-            } else {
-              setIsEditing(true);
-            }
-          }}
-        >
-          <ThemedText style={profileStyles.buttonText}>
-            {isEditing ? "Save Changes" : "Edit Information"}
-          </ThemedText>
-        </TouchableOpacity>
+        <ThemedView style={{ flexDirection: "row", gap: 10 }}>
+          {isEditing && (
+            <TouchableOpacity
+              style={[profileStyles.button, { flex: 1 }]}
+              onPress={() =>
+                handleUserUpdate(user?.id || "", {
+                  name: editableName,
+                  email: editableEmail,
+                })
+              }
+            >
+              <ThemedText style={profileStyles.buttonText}>
+                Save Changes
+              </ThemedText>
+            </TouchableOpacity>
+          )}
+
+          {isEditing && (
+            <TouchableOpacity
+              style={[
+                profileStyles.button,
+                { flex: 1, backgroundColor: "gray" },
+              ]}
+              onPress={handleCancelEdit}
+            >
+              <ThemedText style={profileStyles.buttonText}>Cancel</ThemedText>
+            </TouchableOpacity>
+          )}
+
+          {!isEditing && (
+            <TouchableOpacity
+              style={profileStyles.button}
+              onPress={() => setIsEditing(true)}
+            >
+              <ThemedText style={profileStyles.buttonText}>
+                Edit Information
+              </ThemedText>
+            </TouchableOpacity>
+          )}
+        </ThemedView>
         <TouchableOpacity style={profileStyles.button} onPress={handleSignout}>
           <ThemedText style={profileStyles.buttonText}>Sign out</ThemedText>
         </TouchableOpacity>

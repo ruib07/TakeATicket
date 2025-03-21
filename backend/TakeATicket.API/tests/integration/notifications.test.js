@@ -25,7 +25,7 @@ beforeAll(async () => {
   ticket = ticketResponse.body[0];
 });
 
-test("Test #38 - Should return all notifications", async () => {
+test("Test - Should return all notifications", async () => {
   const response = await supertest(app)
     .get(route)
     .set("Authorization", `Bearer ${user.token}`);
@@ -33,7 +33,7 @@ test("Test #38 - Should return all notifications", async () => {
   expect(response.statusCode).toBe(200);
 });
 
-test("Test #39 - Should return a notification by his ID", async () => {
+test("Test - Should return a notification by his ID", async () => {
   const newNotification = generateNotification({
     ticket_id: ticket.id,
     user_id: user.id,
@@ -55,7 +55,7 @@ test("Test #39 - Should return a notification by his ID", async () => {
   expect(notificationResponse.statusCode).toBe(200);
 });
 
-test("Test #40 - Should return not found message when notification does not exist", async () => {
+test("Test - Should return not found message when notification does not exist", async () => {
   const response = await supertest(app)
     .get(`${route}/${uuidv4()}`)
     .set("Authorization", `Bearer ${user.token}`);
@@ -64,7 +64,7 @@ test("Test #40 - Should return not found message when notification does not exis
   expect(response.body.error).toBe("Notification not found");
 });
 
-test("Test #41 - Should return all notifications when admin is valid", async () => {
+test("Test - Should return all notifications when admin is valid", async () => {
   const newNotification = generateNotification({
     ticket_id: ticket.id,
     user_id: user.id,
@@ -84,7 +84,7 @@ test("Test #41 - Should return all notifications when admin is valid", async () 
   expect(notificationResponse.statusCode).toBe(200);
 });
 
-test("Test #42 - Should return all notifications when user is valid", async () => {
+test("Test - Should return all notifications when user is valid", async () => {
   const newNotification = generateNotification({
     ticket_id: ticket.id,
     user_id: user.id,
@@ -104,7 +104,7 @@ test("Test #42 - Should return all notifications when user is valid", async () =
   expect(notificationResponse.statusCode).toBe(200);
 });
 
-test("Test #43 - Should create a new notification successfully", async () => {
+test("Test - Should create a new notification successfully", async () => {
   const newNotification = generateNotification({
     ticket_id: ticket.id,
     user_id: user.id,
@@ -142,13 +142,13 @@ describe("Notification creation validation", () => {
     expect(response.body.error).toBe(errorMessage);
   };
 
-  test("Test #44 - Insert a notification without a content", () =>
+  test("Test - Insert a notification without a content", () =>
     testTemplate({ content: null }, "Content is required!"));
-  test("Test #45 - Insert a notification without a status", () =>
+  test("Test - Insert a notification without a status", () =>
     testTemplate({ status: null }, "Status is required!"));
 });
 
-test("Test #46 - Should update a notification successfully", async () => {
+test("Test - Should update a notification successfully", async () => {
   const newNotification = generateNotification({
     ticket_id: ticket.id,
     user_id: user.id,
@@ -189,7 +189,7 @@ test("Test #46 - Should update a notification successfully", async () => {
   );
 });
 
-test("Test #47 - Should delete a notification by his ID", async () => {
+test("Test - Should delete a notification by his ID", async () => {
   const existingNotification = generateNotification({
     ticket_id: ticket.id,
     user_id: user.id,

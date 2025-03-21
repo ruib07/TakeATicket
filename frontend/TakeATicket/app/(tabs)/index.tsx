@@ -129,18 +129,18 @@ export default function HomeScreen() {
         <>
           <ThemedView style={globalStyles.stepContainer}>
             <ThemedText type="subtitle">Tickets</ThemedText>
-            <DataTable style={{ padding: 15 }}>
+            <DataTable>
               <DataTable.Header style={{ backgroundColor: tableBackground }}>
                 <DataTable.Title style={{ flex: 2 }}>
                   <ThemedText type="table">Title</ThemedText>
                 </DataTable.Title>
-                <DataTable.Title style={{ marginEnd: 4 }}>
+                <DataTable.Title>
                   <ThemedText type="table">Deadline</ThemedText>
                 </DataTable.Title>
-                <DataTable.Title style={{ flex: 1 }}>
+                <DataTable.Title>
                   <ThemedText type="table">Status</ThemedText>
                 </DataTable.Title>
-                <DataTable.Title style={{ flex: 1 }}>
+                <DataTable.Title>
                   <ThemedText type="table">Actions</ThemedText>
                 </DataTable.Title>
               </DataTable.Header>
@@ -162,12 +162,12 @@ export default function HomeScreen() {
                       {ticket.title}
                     </ThemedText>
                   </DataTable.Cell>
-                  <DataTable.Cell style={{ flex: 1 }}>
+                  <DataTable.Cell>
                     <ThemedText type="table">
-                      {moment(ticket.deadline).format("DD/MM-HH:mm")}
+                      {moment(ticket.deadline).format("DD/MM")}
                     </ThemedText>
                   </DataTable.Cell>
-                  <DataTable.Cell style={{ flex: 1 }}>
+                  <DataTable.Cell>
                     <ThemedText type="table">{ticket.status}</ThemedText>
                   </DataTable.Cell>
                   <DataTable.Cell
@@ -184,24 +184,26 @@ export default function HomeScreen() {
                         onPress={() => handleTicketRemoval(ticket.id!)}
                       />
                     ) : (
-                      <>
-                        <IconButton
-                          icon="check"
-                          size={18}
-                          iconColor={iconColor}
-                          onPress={() =>
-                            handleTicketStatusUpdate(ticket.id!, "accepted")
-                          }
-                        />
-                        <IconButton
-                          icon="close"
-                          size={18}
-                          iconColor={iconColor}
-                          onPress={() =>
-                            handleTicketStatusUpdate(ticket.id!, "rejected")
-                          }
-                        />
-                      </>
+                      ticket.status !== "completed" && (
+                        <>
+                          <IconButton
+                            icon="check"
+                            size={18}
+                            iconColor={iconColor}
+                            onPress={() =>
+                              handleTicketStatusUpdate(ticket.id!, "accepted")
+                            }
+                          />
+                          <IconButton
+                            icon="close"
+                            size={18}
+                            iconColor={iconColor}
+                            onPress={() =>
+                              handleTicketStatusUpdate(ticket.id!, "rejected")
+                            }
+                          />
+                        </>
+                      )
                     )}
                   </DataTable.Cell>
                 </DataTable.Row>

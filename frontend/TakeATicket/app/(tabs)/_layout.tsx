@@ -2,13 +2,12 @@ import { HapticTab } from "@/components/HapticTab";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
+import { getScreens } from "@/constants/Screens";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { storage } from "@/utils/storage";
 import { Tabs } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Platform } from "react-native";
-
-type ValidIcons = "house.fill" | "lock.fill" | "person.fill" | "bell.fill";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -28,35 +27,9 @@ export default function TabLayout() {
     return () => clearInterval(interval);
   }, []);
 
-  if (isAuthenticated === null) {
-    return null;
-  }
+  if (isAuthenticated === null) return null;
 
-  const screens = [
-    {
-      name: "index",
-      title: "Home",
-      icon: "house.fill" as ValidIcons,
-    },
-    !isAuthenticated
-      ? {
-          name: "authentication",
-          title: "Authentication",
-          icon: "lock.fill" as ValidIcons,
-        }
-      : [
-          {
-            name: "profile",
-            title: "Profile",
-            icon: "person.fill" as ValidIcons,
-          },
-          {
-            name: "notifications",
-            title: "Notifications",
-            icon: "bell.fill" as ValidIcons,
-          },
-        ],
-  ].flat();
+  const screens = getScreens(isAuthenticated);
 
   return (
     <Tabs
